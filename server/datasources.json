@@ -1,0 +1,15 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "SCF": {
+    "url": "mongodb://localhost:27017/SCF",
+    "database": "SCF",
+    "password": "",
+    "name": "SCF",
+    "user": "",
+    "useNewUrlParser": true,
+    "connector": "mongodb"
+  }
+}
