@@ -1,123 +1,145 @@
 {
-  "_meta": {
-    "sources": [
-      "loopback/common/models",
-      "loopback/server/models",
-      "../common/models",
-      "./models"
-    ],
-    "mixins": [
-      "loopback/common/mixins",
-      "loopback/server/mixins",
-      "../common/mixins",
-      "./mixins"
-    ]
-  },
-  "User": {
-    "dataSource": "SCF",
-    "public": true,
-    "options": {
-      "realmRequired": false,
-      "remoting": {
-        "sharedMethods": {
-          "*": false,
-          "create": true,
-          "login": true,
-          "logout": true,
-          "findById": true,
-          "find": true,
-          "prototype.patchAttributes": true,
-          "changePassword": true,
-          "resetPassword": true,
-          "setPassword": true,
-          "count": true
-        }
-      }
-    }
-  },
-  "AccessToken": {
-    "dataSource": "SCF",
-    "public": false
-  },
-  "ACL": {
-    "dataSource": "SCF",
-    "public": false
-  },
-  "RoleMapping": {
-    "dataSource": "SCF",
-    "public": false,
-    "options": {
-      "strictObjectIDCoercion": true
-    }
-  },
-  "Role": {
-    "dataSource": "SCF",
-    "public": false
-  },
-  "Questions": {
-    "dataSource": "SCF",
-    "public": true,
-    "options": {
-      "realmRequired": false,
-      "remoting": {
-        "sharedMethods": {
-          "*": false,
-          "create": true,
-          "login": true,
-          "logout": true,
-          "findById": true,
-          "find": true,
-          "prototype.patchAttributes": true,
-          "changePassword": true,
-          "resetPassword": true,
-          "setPassword": true,
-          "count": true
-        }
-      }
-    }
-  },
-  "RegulationsFunctionsMapping": {
-    "dataSource": "SCF",
-    "public": true,
-    "options": {
-      "realmRequired": false,
-      "remoting": {
-        "sharedMethods": {
-          "*": false,
-          "create": true,
-          "login": true,
-          "logout": true,
-          "findById": true,
-          "find": true,
-          "prototype.patchAttributes": true,
-          "changePassword": true,
-          "resetPassword": true,
-          "setPassword": true,
-          "count": true
-        }
-      }
-    }
-  },
-  "RegulationsQuestionsMapping": {
-    "dataSource": "SCF",
-    "public": true,
-    "options": {
-      "realmRequired": false,
-      "remoting": {
-        "sharedMethods": {
-          "*": false,
-          "create": true,
-          "login": true,
-          "logout": true,
-          "findById": true,
-          "find": true,
-          "prototype.patchAttributes": true,
-          "changePassword": true,
-          "resetPassword": true,
-          "setPassword": true,
-          "count": true
-        }
-      }
-    }
-  }
+	"_meta": {
+		"sources": [
+			"loopback/common/models",
+			"loopback/server/models",
+			"../common/models",
+			"./models"
+		],
+		"mixins": [
+			"loopback/common/mixins",
+			"loopback/server/mixins",
+			"../common/mixins",
+			"./mixins"
+		]
+	},
+	"User": {
+		"dataSource": "SCF",
+		"public": true,
+		"options": {
+			"realmRequired": false,
+			"remoting": {
+				"sharedMethods": {
+					"*": false,
+					"create": true,
+					"login": true,
+					"logout": true,
+					"findById": true,
+					"find": true,
+					"prototype.patchAttributes": true,
+					"changePassword": true,
+					"resetPassword": true,
+					"setPassword": true,
+					"count": true
+				}
+			}
+		}
+	},
+	"AccessToken": {
+		"dataSource": "SCF",
+		"public": false
+	},
+	"ACL": {
+		"dataSource": "SCF",
+		"public": false
+	},
+	"RoleMapping": {
+		"dataSource": "SCF",
+		"public": false,
+		"options": {
+			"strictObjectIDCoercion": true
+		}
+	},
+	"Role": {
+		"dataSource": "SCF",
+		"public": false
+	},
+	"Questions": {
+		"dataSource": "SCF",
+		"public": true,
+		"options": {
+			"realmRequired": false,
+			"remoting": {
+				"sharedMethods": {
+					"*": false,
+					"create": true,
+					"login": true,
+					"logout": true,
+					"findById": true,
+					"find": true,
+					"prototype.patchAttributes": true,
+					"changePassword": true,
+					"resetPassword": true,
+					"setPassword": true,
+					"count": true
+				}
+			}
+		}
+	},
+	"RegulationsFunctionsMapping": {
+		"dataSource": "SCF",
+		"public": true,
+		"options": {
+			"realmRequired": false,
+			"remoting": {
+				"sharedMethods": {
+					"*": false,
+					"create": true,
+					"login": true,
+					"logout": true,
+					"findById": true,
+					"find": true,
+					"prototype.patchAttributes": true,
+					"changePassword": true,
+					"resetPassword": true,
+					"setPassword": true,
+					"count": true
+				}
+			}
+		}
+	},
+	"RegulationsQuestionsMapping": {
+		"dataSource": "SCF",
+		"public": true,
+		"options": {
+			"realmRequired": false,
+			"remoting": {
+				"sharedMethods": {
+					"*": false,
+					"create": true,
+					"login": true,
+					"logout": true,
+					"findById": true,
+					"find": true,
+					"prototype.patchAttributes": true,
+					"changePassword": true,
+					"resetPassword": true,
+					"setPassword": true,
+					"count": true
+				}
+			}
+		}
+	},
+	"Response": {
+		"dataSource": "SCF",
+		"public": true,
+		"options": {
+			"realmRequired": false,
+			"remoting": {
+				"sharedMethods": {
+					"*": false,
+					"create": true,
+					"login": true,
+					"logout": true,
+					"findById": true,
+					"find": true,
+					"prototype.patchAttributes": true,
+					"changePassword": true,
+					"resetPassword": true,
+					"setPassword": true,
+					"count": true
+				}
+			}
+		}
+	}
 }
