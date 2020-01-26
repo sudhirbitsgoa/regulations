@@ -4,14 +4,46 @@ module.exports = function(Regulationsquestionsmapping) {
 	// need to extend array of functions
 	// should persist questions id
 	// can share questions to other user
+
+	async function resolveUser(ctx) {
+		const req = ctx.req;
+		const token = req.headers["access_token"] || req.query.access_token;
+		const AccessToken = Regulationsquestionsmapping.app.models.AccessToken;
+		const UserModel = Regulationsquestionsmapping.app.models.User;
+		const details = await AccessToken.findOne({
+			where: {
+				id: token
+			}
+		});
+		const user = await UserModel.findOne({
+			where: {
+				id: details.userId.toString()
+			}
+		});
+		return user;
+	}
+	Regulationsquestionsmapping.beforeRemote('find', async (ctx) => {
+		const user = await resolveUser(ctx);
+		if (user.filter) {
+			ctx.args.filter = user.filter;
+		}
+		return
+	});
 	Regulationsquestionsmapping.afterRemote('find', async (ctx, output) => {
+		const user = await resolveUser(ctx);
+		if (user.filter) {
+			ctx.req.query.filter = user.filter;
+		}
 		if (!ctx.result) {
 			return;
 		}
-		let filter;
+		let filter = [];
 		if (ctx.req.query.filter) {
 			try {
-				filter = JSON.parse(ctx.req.query.filter);
+				filter = ctx.req.query.filter;
+				if (!user.filter) {
+					filter = JSON.parse(ctx.req.query.filter);
+				}
 			} catch (error) {
 				console.log(error);				
 			}
@@ -38,6 +70,10 @@ module.exports = function(Regulationsquestionsmapping) {
 			} catch (error) {
 				console.log('the regulation parse failed');
 			}
+		}
+		if (!user.filter) {
+			user.filter = JSON.parse(ctx.req.query.filter);
+			await user.save()
 		}
 		return;
 	});
