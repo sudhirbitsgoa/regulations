@@ -16,7 +16,6 @@ module.exports = function(Regulationsquestionsmapping) {
 				console.log(error);				
 			}
 		}
-		const fun = ctx.req.query && ctx.req.query.function || [];
 		for (let i = 0; i < ctx.result.length; i++) {
 			const regulation = ctx.result[i];
 			let quest = await Regulationsquestionsmapping.app.models.Questions
@@ -48,11 +47,13 @@ module.exports = function(Regulationsquestionsmapping) {
 		}
 		const regulation = ctx.result[i];
 		let quest = await Regulationsquestionsmapping.app.models.Questions
-		.find({
-			questionsMapping: {
-				$in: regulation.questionsMapping
-			}
-		});
+			.find({
+				where: {
+					questionsMapping: {
+						$in: regulation.questionsMapping
+					}
+				}
+			});
 		
 		try {
 			regulation.questions = quest;
