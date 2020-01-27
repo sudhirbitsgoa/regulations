@@ -49,7 +49,8 @@ module.exports = function(Regulationsquestionsmapping) {
 			}
 		}
 		for (let i = 0; i < ctx.result.length; i++) {
-			const regulation = ctx.result[i].toJSON();
+			const regulation = ctx.result[i];
+			const regulJson = ctx.result[i].toJSON();
 			let quest = await Regulationsquestionsmapping.app.models.Questions
 			.find({
 				where: {
@@ -71,14 +72,15 @@ module.exports = function(Regulationsquestionsmapping) {
 					questions.push(e.toJSON());
 				}
 				regulation.questions = questions;
+				regulJson.questions = questions;
 				delete regulation.questionsMapping;
 			} catch (error) {
 				console.log('the regulation parse failed');
 			}
 			if (!user.filter) {
-				delete regulation.id;
-				regulation.userId = user.id;
-				await Regulationsquestionsmapping.app.models.Response.create(regulation);
+				delete regulJson.id;
+				regulJson.userId = user.id;
+				await Regulationsquestionsmapping.app.models.Response.create(regulJson);
 			}
 		}
 		if (!user.filter) {
