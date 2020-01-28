@@ -22,28 +22,16 @@ module.exports = function(Regulationsquestionsmapping) {
 		});
 		return user;
 	}
-	Regulationsquestionsmapping.beforeRemote('find', async (ctx) => {
-		const user = await resolveUser(ctx);
-		if (user.filter) {
-			ctx.args.filter = user.filter;
-		}
-		return
-	});
+
 	Regulationsquestionsmapping.afterRemote('find', async (ctx, output) => {
 		const user = await resolveUser(ctx);
-		if (user.filter) {
-			ctx.req.query.filter = user.filter;
-		}
 		if (!ctx.result) {
 			return;
 		}
 		let filter = [];
 		if (ctx.req.query.filter) {
 			try {
-				filter = ctx.req.query.filter;
-				if (!user.filter) {
-					filter = JSON.parse(ctx.req.query.filter);
-				}
+				filter = JSON.parse(ctx.req.query.filter);
 			} catch (error) {
 				console.log(error);				
 			}
@@ -77,16 +65,15 @@ module.exports = function(Regulationsquestionsmapping) {
 			} catch (error) {
 				console.log('the regulation parse failed');
 			}
-			if (!user.filter) {
-				delete regulJson.id;
-				regulJson.userId = user.id;
-				await Regulationsquestionsmapping.app.models.Response.create(regulJson);
-			}
+			delete regulJson.id;
+			regulJson.userId = user.id;
+			await Regulationsquestionsmapping.app.models.Response.remove({userId: user.id});
+			await Regulationsquestionsmapping.app.models.Response.create(regulJson);
 		}
-		if (!user.filter) {
-			user.filter = JSON.parse(ctx.req.query.filter);
-			await user.save()
-		}
+		// if (!user.filter) {
+		// 	user.filter = JSON.parse(ctx.req.query.filter);
+		// 	await user.save()
+		// }
 		return;
 	});
 	Regulationsquestionsmapping.afterRemote('findById', async (ctx, output) => {
