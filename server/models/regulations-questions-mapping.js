@@ -56,8 +56,21 @@ module.exports = function(Regulationsquestionsmapping) {
 			try {
 				let questions = []
 				for (let j = 0; j < quest.length; j++) {
-					const e = quest[j];
-					questions.push(e.toJSON());
+					const e = quest[j].toJSON();
+					questions.push(e);
+					const storeQuest = await Regulationsquestionsmapping.app.models.Response.findOne({
+						where: {
+							userId: user.id,
+							question: e.question
+						}
+					});
+					if (storeQuest) {
+						continue;
+					}
+					await Regulationsquestionsmapping.app.models.Response.create({
+						userId: user.id,
+						question: e.question
+					});
 				}
 				regulation.questions = questions;
 				regulJson.questions = questions;
@@ -67,8 +80,6 @@ module.exports = function(Regulationsquestionsmapping) {
 			}
 			delete regulJson.id;
 			regulJson.userId = user.id;
-			await Regulationsquestionsmapping.app.models.Response.remove({userId: user.id});
-			await Regulationsquestionsmapping.app.models.Response.create(regulJson);
 		}
 		// if (!user.filter) {
 		// 	user.filter = JSON.parse(ctx.req.query.filter);
