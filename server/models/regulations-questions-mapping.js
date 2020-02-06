@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(Regulationsquestionsmapping) {
+module.exports = function (Regulationsquestionsmapping) {
 	// need to extend array of functions
 	// should persist questions id
 	// can share questions to other user
@@ -33,23 +33,23 @@ module.exports = function(Regulationsquestionsmapping) {
 			try {
 				filter = JSON.parse(ctx.req.query.filter);
 			} catch (error) {
-				console.log(error);				
+				console.log(error);
 			}
 		}
 		for (let i = 0; i < ctx.result.length; i++) {
 			const regulation = ctx.result[i];
 			const regulJson = ctx.result[i].toJSON();
 			let quest = await Regulationsquestionsmapping.app.models.Questions
-			.find({
-				where: {
-					question: {
-						inq: regulation.questionsMapping
-					},
-					function: {
-						inq: filter.func
+				.find({
+					where: {
+						question: {
+							inq: regulation.questionsMapping
+						},
+						function: {
+							inq: filter.func
+						}
 					}
-				}
-			});
+				});
 			if (!quest) {
 				continue;
 			}
@@ -71,15 +71,53 @@ module.exports = function(Regulationsquestionsmapping) {
 						userId: user.id,
 						question: e.question
 					});
+					
+				}
+				const query = {
+					where: {
+						userId: user.id,
+						regulation:  regulation.regulation
+					}
+				};
+				const storeReg = await Regulationsquestionsmapping
+					.app.models.RegulationsUser.findOne(query);
+				if (!storeReg) {
+					const obj = {
+						userId: user.id,
+						createdAt: Date.now(),
+						regulation: regulJson.regulation.toString(),
+						functions: filter.func
+					};
+					await Regulationsquestionsmapping.app.models.RegulationsUser.create(obj);
 				}
 				regulation.questions = questions;
 				regulJson.questions = questions;
 				delete regulation.questionsMapping;
 			} catch (error) {
-				console.log('the regulation parse failed');
+				console.log('the regulation parse failed', error);
 			}
 			delete regulJson.id;
 			regulJson.userId = user.id;
+		}
+		if (filter.where && filter.where.regulation && filter.where.regulation.inq.length > 0) {
+			try {
+				const RgUsers = await Regulationsquestionsmapping.app.models.RegulationsUser.find({
+					where: {
+						userId: user.id,
+						"regulation": {
+							nin: filter.where.regulation.inq
+						}
+					}
+				});
+				for (let j = 0; j < RgUsers.length; j++) {
+					const RgUser = RgUsers[j];
+					RgUser.archived = true;
+					RgUser.archivedAt = Date.now();
+					await RgUser.save();
+				}
+			} catch (error) {
+				debugger;
+			}
 		}
 		// if (!user.filter) {
 		// 	user.filter = JSON.parse(ctx.req.query.filter);
@@ -100,7 +138,7 @@ module.exports = function(Regulationsquestionsmapping) {
 					}
 				}
 			});
-		
+
 		try {
 			regulation.questions = quest;
 			delete regulation.questionsMapping;
