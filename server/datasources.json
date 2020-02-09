@@ -8,6 +8,7 @@
     "database": "SCF",
     "password": "",
     "name": "SCF",
+    "debug": true,
     "user": "",
     "useNewUrlParser": true,
     "connector": "mongodb"

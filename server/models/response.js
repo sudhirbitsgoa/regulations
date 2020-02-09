@@ -29,10 +29,44 @@ module.exports = function (Response) {
 			where['userId'] = user.id;
 		} else {
 			ctx.args.filter = {
-				where : {
+				where: {
 					userId: user.id
 				}
 			};
 		}
 	});
+
+	/**
+	 * Assing Response to a user
+	 * @param {string} functionGroup Select function group block
+	 * @param {string} userId 
+	 * @param {Function(Error, boolean)} callback
+	 */
+
+	Response.assign = async function (functionGroup, userId, callback) {
+		const success = {
+			success: true
+		};
+		let quest = await Response.app.models.Questions
+			.find({
+				function: functionGroup
+			});
+
+		const qIds = quest.map(q => q.question);
+		await Response.dataSource.connector.db.collection('Response')
+			.update({
+				question: {
+					$in: qIds
+				}
+			}, {
+					$addToSet: {
+						assignedTo: userId
+					}
+				}, {
+					multi: true
+				});
+		// TODO
+		return success;
+		// callback(null, success);
+	};
 };

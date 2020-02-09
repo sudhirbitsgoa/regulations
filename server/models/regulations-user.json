@@ -13,8 +13,10 @@
     },
     "archivedAt": {
       "type": "date"
-	},
-	"archived" : "boolean"
+    },
+    "archived": {
+      "type": "boolean"
+    }
   },
   "validations": [],
   "relations": {},
