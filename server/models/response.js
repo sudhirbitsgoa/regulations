@@ -21,18 +21,26 @@ module.exports = function (Response) {
 
 	Response.beforeRemote('find', async (ctx, output) => {
 		const user = await resolveUser(ctx);
-		if (!ctx.result) {
-			return;
-		}
 		if (ctx.args && ctx.args.filter) {
 			const where = ctx.args.filter.where;
-			where['userId'] = user.id;
+			if (user.role === 'CSO') {
+				where['userId'] = user.id;
+			} else {
+				where.assignedTo = user.id
+			}
 		} else {
 			ctx.args.filter = {
 				where: {
-					userId: user.id
+					assignedTo: user.id
 				}
 			};
+			if (user.role === 'CSO') {
+				ctx.args.filter = {
+					where: {
+						userId: user.id
+					}
+				}
+			}
 		}
 	});
 
@@ -59,12 +67,12 @@ module.exports = function (Response) {
 					$in: qIds
 				}
 			}, {
-					$addToSet: {
-						assignedTo: userId
-					}
-				}, {
-					multi: true
-				});
+				$addToSet: {
+					assignedTo: userId
+				}
+			}, {
+				multi: true
+			});
 		// TODO
 		return success;
 		// callback(null, success);
