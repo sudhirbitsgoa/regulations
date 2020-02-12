@@ -40,21 +40,19 @@
     "assign": {
       "accepts": [
         {
-          "arg": "functionGroup",
-          "type": "string",
-          "required": true,
+          "arg": "req",
+          "type": "object",
           "description": "Select function group block",
           "http": {
-            "source": "body"
+            "source": "req"
           }
         },
         {
-          "arg": "userId",
-          "type": "string",
-          "required": true,
+          "arg": "res",
+          "type": "object",
           "description": "",
           "http": {
-            "source": "body"
+            "source": "res"
           }
         }
       ],

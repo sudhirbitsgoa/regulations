@@ -1,5 +1,6 @@
 'use strict';
-
+const mongo = require('mongodb');
+const ObjectID = mongo.ObjectID;
 module.exports = function (Response) {
 	async function resolveUser(ctx) {
 		const req = ctx.req;
@@ -26,7 +27,7 @@ module.exports = function (Response) {
 			if (user.role === 'CSO') {
 				where['userId'] = user.id;
 			} else {
-				where.assignedTo = user.id
+				where.assignedTo = user.id;
 			}
 		} else {
 			ctx.args.filter = {
@@ -51,13 +52,18 @@ module.exports = function (Response) {
 	 * @param {Function(Error, boolean)} callback
 	 */
 
-	Response.assign = async function (functionGroup, userId, callback) {
+	Response.assign = async function (req, res, callback) {
+		const body = req.body;
+		const functionGroup = body.functionGroup;
+		const userId = body.userId;
 		const success = {
 			success: true
 		};
 		let quest = await Response.app.models.Questions
 			.find({
-				function: functionGroup
+				where: {
+					function: functionGroup
+				}
 			});
 
 		const qIds = quest.map(q => q.question);
@@ -68,7 +74,7 @@ module.exports = function (Response) {
 				}
 			}, {
 				$addToSet: {
-					assignedTo: userId
+					assignedTo: new ObjectID(userId)
 				}
 			}, {
 				multi: true

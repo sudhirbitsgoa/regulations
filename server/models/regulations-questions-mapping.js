@@ -69,7 +69,8 @@ module.exports = function (Regulationsquestionsmapping) {
 					}
 					await Regulationsquestionsmapping.app.models.Response.create({
 						userId: user.id,
-						question: e.question
+						question: e.question,
+						questionDetails: e
 					});
 					
 				}
