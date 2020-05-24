@@ -71,6 +71,41 @@
           "verb": "put"
         }
       ]
-    }
+		},
+		"score": {
+			"accepts": [
+        {
+          "arg": "req",
+          "type": "object",
+          "description": "Select function group block",
+          "http": {
+            "source": "req"
+          }
+        },
+        {
+          "arg": "res",
+          "type": "object",
+          "description": "",
+          "http": {
+            "source": "res"
+          }
+        }
+      ],
+      "returns": [
+        {
+          "arg": "count",
+          "type": "number",
+          "root": true,
+          "description": "return success true or false"
+        }
+      ],
+      "description": "get score",
+      "http": [
+        {
+          "path": "/score",
+          "verb": "get"
+        }
+      ]
+		}
   }
 }

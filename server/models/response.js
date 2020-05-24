@@ -83,4 +83,27 @@ module.exports = function (Response) {
 		return success;
 		// callback(null, success);
 	};
+
+	Response.score = async function (req, res, callback) {
+		const Response = Response.dataSource.connector.db.collection('Response');
+		const aggregation = [
+			{
+				'$match': {
+					'answer': {
+						'$exists': 1
+					}
+				}
+			}, {
+				'$group': {
+					'_id': '$answer',
+					'total': {
+						'$sum': 1
+					}
+				}
+			}
+		];
+		const resp = await Response.aggregate(aggregation);
+		const respo = resp.toArray();
+		return respo;
+	}
 };
