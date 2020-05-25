@@ -85,7 +85,7 @@ module.exports = function (Response) {
 	};
 
 	Response.score = async function (req, res, callback) {
-		const Response = Response.dataSource.connector.db.collection('Response');
+		const ResponseModel = Response.dataSource.connector.db.collection('Response');
 		const aggregation = [
 			{
 				'$match': {
@@ -102,8 +102,8 @@ module.exports = function (Response) {
 				}
 			}
 		];
-		const resp = await Response.aggregate(aggregation);
-		const respo = resp.toArray();
+		const resp = await ResponseModel.aggregate(aggregation);
+		const respo = await resp.toArray();
 		return respo;
 	}
 };

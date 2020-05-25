@@ -132,7 +132,8 @@
           "find": true,
           "prototype.patchAttributes": true,
 		  "count": true,
-		  "assign": true
+		  "assign": true,
+		  "score": true
         }
       }
     }
